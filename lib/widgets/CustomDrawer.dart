@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/AboutUsScreen.dart';
+import 'package:flutter_supabase_weight_bridge_record_control/screens/ContactUsScreen.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/auth/ProfileScreen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -86,6 +87,19 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => AboutUsScreen(title: 'About Us'),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contacts),
+              title: Text('Contact Us'),
+              onTap: () {
+                // Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactUsScreen(title: 'Contact Us'),
                   ),
                 );
               },
