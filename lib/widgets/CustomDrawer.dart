@@ -62,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
               title: Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProfileScreen(title: 'Profile'),
@@ -83,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
               title: Text('About Us'),
               onTap: () {
                 // Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AboutUsScreen(title: 'About Us'),
@@ -96,7 +96,7 @@ class CustomDrawer extends StatelessWidget {
               title: Text('Contact Us'),
               onTap: () {
                 // Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ContactUsScreen(title: 'Contact Us'),
