@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_supabase_weight_bridge_record_control/screens/AboutUsScreen.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/auth/ProfileScreen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -74,6 +75,19 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/settings');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contacts),
+              title: Text('About Us'),
+              onTap: () {
+                // Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AboutUsScreen(title: 'About Us'),
+                  ),
+                );
               },
             ),
             Divider(),
