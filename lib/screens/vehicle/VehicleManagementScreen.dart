@@ -9,8 +9,13 @@ import './VehicleFormScreen..dart';
 
 class VehicleManagementScreen extends StatefulWidget {
   final String title;
+  final String? vehicleTypeFilter; // Accept vehicle type as filter
 
-  const VehicleManagementScreen({super.key, required this.title});
+  const VehicleManagementScreen({
+    super.key,
+    required this.title,
+    required this.vehicleTypeFilter
+  });
 
   @override
   State<VehicleManagementScreen> createState() => _VehicleManagementScreenState();
@@ -22,6 +27,14 @@ class _VehicleManagementScreenState extends State<VehicleManagementScreen> {
   String? driverNameFilter;
   String? vehicleNoFilter;
   DateTime? selectedDate;
+
+  String? vehicleTypeFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    vehicleTypeFilter = widget.vehicleTypeFilter; // Set initial filter if passed
+  }
 
   // Fetch vehicle data from Supabase in real-time with filtering
   Stream<List<Vehicle>> _fetchVehicles() {
@@ -45,6 +58,15 @@ class _VehicleManagementScreenState extends State<VehicleManagementScreen> {
               .toLowerCase()
               .contains(vehicleNoFilter!.toLowerCase()))
               .toList();
+        }
+
+        if (vehicleTypeFilter != null && vehicleTypeFilter!.isNotEmpty) {
+          print("Filtering by vehicle type: ${vehicleTypeFilter}"); // Debugging
+          vehicles = vehicles
+              .where((vehicle) =>
+          vehicle.type != null && // Null check
+              vehicle.type.toLowerCase() == vehicleTypeFilter!.toLowerCase() // Exact match
+          ).toList();
         }
 
         return vehicles;
@@ -109,93 +131,119 @@ class _VehicleManagementScreenState extends State<VehicleManagementScreen> {
   }
 
   void _openFilterDialog() {
-    TextEditingController driverController =
-    TextEditingController(text: driverNameFilter);
-    TextEditingController vehicleController =
-    TextEditingController(text: vehicleNoFilter);
+    TextEditingController driverController = TextEditingController(text: driverNameFilter);
+    TextEditingController vehicleController = TextEditingController(text: vehicleNoFilter);
+
+    String? selectedVehicleType = vehicleTypeFilter; // Ensure it retains previous selection
+    List<String> vehicleTypes = ['Auto', 'Tempo', 'Eicher', 'Tractor', 'Lorry', 'Taurus'];
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom, top: 16, left: 16, right: 16),
-        child: Wrap(
-          children: [
-            Text("Filter Vehicles", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-
-            // Driver Name Filter
-            TextField(
-              controller: driverController,
-              decoration: InputDecoration(labelText: 'Driver Name', prefixIcon: Icon(Icons.person)),
-            ),
-            SizedBox(height: 10),
-
-            // Vehicle Number Filter
-            TextField(
-              controller: vehicleController,
-              decoration: InputDecoration(labelText: 'Number Plate', prefixIcon: Icon(Icons.directions_car)),
-            ),
-            SizedBox(height: 10),
-
-            // Date Filter
-            ListTile(
-              title: Text("Select Date"),
-              subtitle: Text(selectedDate != null
-                  ? DateFormat('dd-MM-yyyy').format(selectedDate!)
-                  : 'No Date Selected'),
-              trailing: Icon(Icons.calendar_today),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime(2030),
-                );
-                if (pickedDate != null) {
-                  setState(() {
-                    selectedDate = pickedDate;
-                  });
-                  Navigator.pop(context);
-                  _openFilterDialog();
-                }
-              },
-            ),
-
-            SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) {
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom, top: 16, left: 16, right: 16),
+            child: Wrap(
               children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      driverNameFilter = null;
-                      vehicleNoFilter = null;
-                      selectedDate = null;
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: Text("Clear Filters"),
+                Text("Filter Vehicles", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+
+                // Driver Name Filter
+                TextField(
+                  controller: driverController,
+                  decoration: InputDecoration(labelText: 'Driver Name', prefixIcon: Icon(Icons.person)),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      driverNameFilter = driverController.text;
-                      vehicleNoFilter = vehicleController.text;
+                SizedBox(height: 10),
+
+                // Vehicle Number Filter
+                TextField(
+                  controller: vehicleController,
+                  decoration: InputDecoration(labelText: 'Number Plate', prefixIcon: Icon(Icons.directions_car)),
+                ),
+                SizedBox(height: 10),
+
+                // Vehicle Type Filter (Dropdown)
+                DropdownButtonFormField<String>(
+                  value: selectedVehicleType,
+                  decoration: InputDecoration(labelText: 'Vehicle Type', prefixIcon: Icon(Icons.local_shipping)),
+                  items: vehicleTypes.map((String type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setModalState(() {
+                      selectedVehicleType = newValue; // Update inside modal
                     });
-                    Navigator.pop(context);
                   },
-                  child: Text("Apply Filters"),
+                ),
+                SizedBox(height: 10),
+
+                // Date Filter
+                ListTile(
+                  title: Text("Select Date"),
+                  subtitle: Text(selectedDate != null
+                      ? DateFormat('dd-MM-yyyy').format(selectedDate!)
+                      : 'No Date Selected'),
+                  trailing: Icon(Icons.calendar_today),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime(2030),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        selectedDate = pickedDate;
+                      });
+                      Navigator.pop(context);
+                      _openFilterDialog();
+                    }
+                  },
+                ),
+
+                SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          driverNameFilter = null;
+                          vehicleNoFilter = null;
+                          selectedDate = null;
+                          vehicleTypeFilter = null;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text("Clear Filters"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          driverNameFilter = driverController.text;
+                          vehicleNoFilter = vehicleController.text;
+                          vehicleTypeFilter = selectedVehicleType; // Correctly update here
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text("Apply Filters"),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
