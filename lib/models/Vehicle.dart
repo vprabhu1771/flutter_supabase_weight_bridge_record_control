@@ -53,13 +53,13 @@ class Vehicle {
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
         id: json['id'],
-        number_plate: json['vehicle_no'],
+        number_plate: json['number_plate'],
         driver_name: json['driver_name'],
         company_name: json['company_name'],
         first_weight: json['first_weight'],
         second_weight: json['second_weight'],
         net_weight: json['net_weight'],
-        amount: json['amount'],
+        amount: json['amount'].toString(), // ✅ Ensure amount is always a String
         phone_no: json['phone_no'],
         image_path: json['image_path'],
         type: json['type'],
