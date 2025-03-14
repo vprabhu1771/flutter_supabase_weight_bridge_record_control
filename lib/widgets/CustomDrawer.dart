@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/AboutUsScreen.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/ContactUsScreen.dart';
 import 'package:flutter_supabase_weight_bridge_record_control/screens/auth/ProfileScreen.dart';
+import '../screens/vehicle/VehicleManagementScreen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -55,6 +56,19 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/home');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.fire_truck),
+              title: Text('Vehicle'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VehicleManagementScreen(title: 'Vehicle'),
+                  ),
+                );
               },
             ),
             ListTile(
