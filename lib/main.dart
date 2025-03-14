@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_supabase_weight_bridge_record_control/screens/HomeScreen.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../screens/HomeScreen.dart';
+import '../services/UiProvider.dart';
 
 void main() async {
 
@@ -23,9 +26,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(title: 'Home'),
+    return ChangeNotifierProvider(
+      create: (BuildContext context)=>UiProvider()..init(),
+      child: Consumer<UiProvider>(
+        builder: (context, UiProvider notifier, child) {
+          return MaterialApp(
+
+            debugShowCheckedModeBanner: false,
+
+            //By default theme setting, you can also set system
+            // when your mobile theme is dark the app also become dark
+
+            themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
+
+            //Our custom theme applied
+            darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
+
+            theme: notifier.isDark
+                ? notifier.darkTheme // dark theme applied
+                : notifier.greenTheme, // pink theme applied when not dark
+
+            home: HomeScreen(title: 'Home'),
+
+          );
+        },
+      ),
     );
   }
 }

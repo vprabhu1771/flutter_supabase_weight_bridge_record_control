@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../widgets/CustomDrawer.dart';
 import '../HomeScreen.dart';
 
 import '../auth/EditProfileScreen.dart';
 import 'EditProfilePicScreen.dart';
+
+final supabase = Supabase.instance.client;
+
+final storage = FlutterSecureStorage();
 
 class ProfileScreen extends StatefulWidget {
   final String title;

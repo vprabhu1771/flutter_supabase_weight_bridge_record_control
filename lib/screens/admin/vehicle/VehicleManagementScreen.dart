@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../models/Vehicle.dart';
+import '../../../models/Vehicle.dart';
 import './VehicleDetailScreen.dart';
 import './VehicleFormScreen..dart';
 
@@ -166,7 +166,8 @@ class _VehicleManagementScreenState extends State<VehicleManagementScreen> {
 
                 // Vehicle Type Filter (Dropdown)
                 DropdownButtonFormField<String>(
-                  value: selectedVehicleType,
+                  // value: selectedVehicleType,
+                  value: vehicleTypes.contains(selectedVehicleType) ? selectedVehicleType : null,
                   decoration: InputDecoration(labelText: 'Vehicle Type', prefixIcon: Icon(Icons.local_shipping)),
                   items: vehicleTypes.map((String type) {
                     return DropdownMenuItem<String>(

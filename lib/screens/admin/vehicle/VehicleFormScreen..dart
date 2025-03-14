@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../models/Vehicle.dart';
+import '../../../models/Vehicle.dart';
 
 class VehicleFormScreen extends StatefulWidget {
   final String title;
@@ -130,14 +130,14 @@ class _VehicleFormScreenState extends State<VehicleFormScreen> {
             key: _formKey,
             child: Column(
               children: [
-                _buildTextField(driverNameController, 'Driver Name'),
-                _buildTextField(numberPlateController, 'Number Plate'),
-                _buildTextField(companyNameController, 'Company Name'),
-                _buildTextField(firstWeightController, 'First Weight'),
-                _buildTextField(secondWeightController, 'Second Weight'),
-                _buildTextField(netWeightController, 'Net Weight'),
-                _buildTextField(amountController, 'Amount'),
-                _buildTextField(phoneNoController, 'Phone No'),
+                _buildTextField(driverNameController, 'Driver Name', (value) {}, TextInputType.text), // Numeric keyboard),
+                _buildTextField(numberPlateController, 'Number Plate', (value) {}, TextInputType.text),
+                _buildTextField(companyNameController, 'Company Name', (value) {}, TextInputType.text),
+                _buildTextField(firstWeightController, 'First Weight', (value) => _calculateNetWeight(), TextInputType.number),
+                _buildTextField(secondWeightController, 'Second Weight', (value) => _calculateNetWeight(), TextInputType.number),
+                _buildTextField(netWeightController, 'Net Weight', (value) {}, TextInputType.number), // Read-only field
+                _buildTextField(amountController, 'Amount', (value) {}, TextInputType.number),
+                _buildTextField(phoneNoController, 'Phone No', (value) {}, TextInputType.number),
 
                 _buildDropdownField(), // Vehicle Type Dropdown
 
@@ -183,14 +183,29 @@ class _VehicleFormScreenState extends State<VehicleFormScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget _buildTextField(
+      TextEditingController controller,
+      String label,
+      Function(String) onChanged,
+      TextInputType keyboardType
+    ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(labelText: label),
         validator: (value) => value!.isEmpty ? 'Enter $label' : null,
+        onChanged: onChanged,
+        keyboardType: keyboardType, // Set the keyboard type
       ),
     );
+  }
+
+  void _calculateNetWeight() {
+    double firstWeight = double.tryParse(firstWeightController.text) ?? 0;
+    double secondWeight = double.tryParse(secondWeightController.text) ?? 0;
+    double netWeight = firstWeight - secondWeight;
+
+    netWeightController.text = netWeight.toStringAsFixed(2);
   }
 }
