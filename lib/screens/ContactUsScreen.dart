@@ -35,7 +35,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
   // Function to launch Instagram
   Future<void> _launchInstagram() async {
-    const instagramUrl = 'https://www.instagram.com/im_ragul7/#';
+    const instagramUrl = 'https://www.instagram.com/prasanna.g02/#';
     if (await launcher.canLaunch(instagramUrl)) {
       await launcher.launch(instagramUrl);
     } else {
@@ -57,54 +57,93 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title, style: const TextStyle(fontSize: 22)),
+        centerTitle: true,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'Support Us',
-              style: TextStyle(fontSize: 24.0),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-            Text(
-              'Address: ABC weight bridge, Cuddalore to Vadaloor Main Road Subramaniyapuram, Cuddalore.',
-              style: TextStyle(fontSize: 16.0),
+            const SizedBox(height: 10),
+            Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const Icon(Icons.location_on, size: 40, color: Colors.green),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'ABC Weight Bridge, Cuddalore to Vadaloor Main Road, Subramaniyapuram, Cuddalore.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 20,
+              runSpacing: 10,
+              alignment: WrapAlignment.center,
               children: [
-                InkWell(
-                  onTap: () {
-                    _launchPhone('+918056373718'); // Replace with your desired phone number
-                  },
-                  child: Image.asset('assets/support_icon/call_icon.png', width: 32, height: 32),
+                _buildContactButton(
+                  icon: 'assets/support_icon/call_icon.png',
+                  label: "Call",
+                  onTap: () => _launchPhone('+918428019591'),
                 ),
-                InkWell(
-                  onTap: () {
-                    _launchWhatsApp('+918056373718'); // Replace with your desired WhatsApp number
-                  },
-                  child: Image.asset('assets/support_icon/whatsapp_icon.png', width: 32, height: 32),
+                _buildContactButton(
+                  icon: 'assets/support_icon/whatsapp_icon.png',
+                  label: "WhatsApp",
+                  onTap: () => _launchWhatsApp('+918428019591'),
                 ),
-                InkWell(
-                  onTap: () {
-                    _launchInstagram();
-                  },
-                  child: Image.asset('assets/support_icon/instagram_icon.png', width: 32, height: 32),
+                _buildContactButton(
+                  icon: 'assets/support_icon/instagram_icon.png',
+                  label: "Instagram",
+                  onTap: _launchInstagram,
                 ),
-                InkWell(
-                  onTap: () {
-                    _launchGmail('rahulmass7703@gmail.com'); // Replace with your desired Gmail address
-                  },
-                  child: Image.asset('assets/support_icon/gmail_icon.png', width: 32, height: 32),
+                _buildContactButton(
+                  icon: 'assets/support_icon/gmail_icon.png',
+                  label: "Email",
+                  onTap: () => _launchGmail('prasannaganesan1602@gmail.com'),
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildContactButton({required String icon, required String label, required VoidCallback onTap}) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(50),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(color: Colors.grey.shade300, blurRadius: 8, spreadRadius: 1),
+              ],
+            ),
+            child: Image.asset(icon, width: 40, height: 40),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+      ],
     );
   }
 }
