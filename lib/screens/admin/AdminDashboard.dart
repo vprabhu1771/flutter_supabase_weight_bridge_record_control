@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_supabase_weight_bridge_record_control/screens/admin/vehicle/VehicleManagementScreen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../widgets/CustomDrawer.dart';
 
@@ -182,7 +183,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
     required IconData icon,
   }) {
     return GestureDetector(
-      onTap: () {}, // Handle tap action
+      onTap: () {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VehicleManagementScreen(
+              title: '$label Vehicles',
+              vehicleTypeFilter: label, // Pass the vehicle type
+            ),
+          ),
+        );
+
+      }, // Handle tap action
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 4,
