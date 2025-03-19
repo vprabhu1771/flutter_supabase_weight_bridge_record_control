@@ -180,8 +180,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController.text = "admin@gmail.com";
                   passwordController.text = "admin@123";
                 } else if (_selectedRole == 'Customer') {
-                  emailController.text = "lali@gmail.com";
-                  passwordController.text = "admin@123";
+                  emailController.text = "prasanna@gmail.com";
+                  passwordController.text = "prasanna";
                 }
               },
             ),
