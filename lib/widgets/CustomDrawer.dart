@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_supabase_weight_bridge_record_control/screens/admin/vehicle/VehicleFormScreen..dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -82,6 +83,20 @@ class CustomDrawer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AdminDashboard(title: 'Dashboard'),
+                      ),
+                    );
+                  },
+                ),
+
+                ListTile(
+                  leading: Icon(Icons.add_circle_outline),
+                  title: Text('Vehicle Entry'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VehicleFormScreen(title: 'Vehicle Entry'),
                       ),
                     );
                   },
