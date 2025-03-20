@@ -37,7 +37,7 @@
     </queries>
 
     <application
-        android:label="flutter_supabase_weight_bridge_record_control"
+        android:label="Weight Bridge"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
