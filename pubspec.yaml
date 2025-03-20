@@ -76,6 +76,7 @@ flutter:
     - assets/support_icon/gmail_icon.png
     - assets/support_icon/instagram_icon.png
     - assets/support_icon/whatsapp_icon.png
+    - assets/splash_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
